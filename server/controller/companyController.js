@@ -1,10 +1,8 @@
-import { generateInstrumentOnce } from "@sentry/node";
 import Company from "../models/Company.js";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import generateToken from "../utils/generateToken.js";
 import Job from "../models/job.js";
-import { messageInRaw } from "svix";
 import JobApplication from "../models/jobApplication.js";
 
 // Register a new company
@@ -161,13 +159,37 @@ export const getCompanyPostedJobs = async (req, res) => {
 export const ChangeJobApplicationStatus = async (req, res) => {
     try {
         const { id, status } = req.body;
+        const companyId = req.company._id;
 
-        // Find job application and update status
-        await JobApplication.findOneAndUpdate({ _id: id }, { status });
+        const application = await JobApplication.findOneAndUpdate(
+            {
+                _id: id,
+                companyId: companyId,
+            },
+            {
+                status,
+            },
+            {
+                new: true,
+            },
+        );
 
-        res.json({ success: true, message: "Status changed" });
+        if (!application) {
+            return res.json({
+                success: false,
+                message: "Application not found",
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Status changed",
+        });
     } catch (error) {
-        res.json({ success: false, error: error.message });
+        res.json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
