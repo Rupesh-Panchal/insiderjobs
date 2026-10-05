@@ -1,6 +1,6 @@
 import express from "express";
 
-import { registerUser, loginUser, getUserData, applyForJob, getUserJobApplications, updateUserResume } from "../controller/userController.js";
+import { registerUser, loginUser, getUserData, applyForJob, getUserJobApplications, updateUserResume, updateUserProfileImage } from "../controller/userController.js";
 
 import userAuth from "../middlewares/userAuth.js";
 import upload from "../config/multer.js";
@@ -24,5 +24,8 @@ router.get("/applications", userAuth, getUserJobApplications);
 
 // Update employee resume
 router.post("/update-resume", userAuth, upload.single("resume"), updateUserResume);
+
+// Update employee profile image
+router.post("/update-profile-image", userAuth, upload.single("image"), updateUserProfileImage);
 
 export default router;

@@ -360,3 +360,62 @@ export const updateUserResume = async (req, res) => {
         });
     }
 };
+
+// =====================================================
+// Update User Profile Image
+// =====================================================
+
+export const updateUserProfileImage = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.json({
+                success: false,
+                message: "Please login first",
+            });
+        }
+
+        const imageFile = req.file;
+
+        if (!imageFile) {
+            return res.json({
+                success: false,
+                message: "Profile image is required",
+            });
+        }
+
+        const userData = await User.findById(userId);
+
+        if (!userData) {
+            return res.json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        // Upload profile image to Cloudinary
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+            folder: "insiderjobs/profile-images",
+            resource_type: "image",
+        });
+
+        // Save Cloudinary URL in MongoDB
+        userData.image = imageUpload.secure_url;
+
+        await userData.save();
+
+        return res.json({
+            success: true,
+            message: "Profile image updated successfully",
+            image: userData.image,
+        });
+    } catch (error) {
+        console.error("Update profile image error:", error);
+
+        return res.json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
