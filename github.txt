@@ -1,0 +1,11 @@
+git add .
+git commit -m "your commit message"
+git push
+
+github repo
+mongodb
+clerk dashboard
+vercel
+cloudinary
+https://dashboard.clerk.com/apps/app_31GtkUwp3PSGMMNQzms0X4X6QEx/instances/ins_31GtkRWvoW9Y5ISkjveKLkNkSAM/api-keys
+
