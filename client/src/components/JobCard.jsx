@@ -44,7 +44,7 @@ const JobCard = ({ job }) => {
                 </button>
                 <button
                     onClick={() => {
-                        navigate(`/job-details/${job._id}`); // Navigate to job details page
+                        navigate(`/apply-job/${job._id}`); // Navigate to job details page
                         window.scrollTo(0, 0); // Scroll to top of the page
                     }}
                     className="border border-gray-300 px-4 py-2 rounded cursor-pointer"
